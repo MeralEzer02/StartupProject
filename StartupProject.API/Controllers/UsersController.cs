@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using StartupProject.Data;
-using System.Linq;
+using StartupProject.Data.DTOs;
+using StartupProject.Data.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace StartupProject.API.Controllers
 {
@@ -8,28 +13,41 @@ namespace StartupProject.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IRepository<User> _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public UsersController(AppDbContext context)
+        public UsersController(IRepository<User> userRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _context = context;
+            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            var users = _context.Users.ToList();
-            return Ok(users);
+            var users = _userRepository.GetAll();
+
+            var userDtos = _mapper.Map<List<UserDto>>(users);
+
+            return Ok(userDtos);
         }
 
         [HttpPost]
-        public IActionResult Add(User user)
+        public async Task<IActionResult> Add(UserCreateDto userDto)
         {
-            _context.Users.Add(user);
+            var newUser = _mapper.Map<User>(userDto);
 
-            _context.SaveChanges();
+            newUser.Id = Guid.NewGuid();
+            newUser.PasswordHash = userDto.Password; 
+            newUser.CreatedAt = DateTime.Now;
+            newUser.LastUpdatedAt = DateTime.Now;
 
-            return Ok(user);
+            _userRepository.Add(newUser);
+            await _unitOfWork.CommitAsync();
+
+            return Ok(new { Message = "Kullanıcı başarıyla eklendi.", UserId = newUser.Id });
         }
     }
 }

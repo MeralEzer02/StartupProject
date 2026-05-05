@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using StartupProject.Data;
+using StartupProject.Data.Repositories;
+using StartupProject.API.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +19,20 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader());
 });
 
+// Generic Repository kaydý
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+// Unit of Work kaydý
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// AutoMapper Kaydý
+builder.Services.AddAutoMapper(config =>
+{
+    config.AddProfile<MapProfile>();
+});
+
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
