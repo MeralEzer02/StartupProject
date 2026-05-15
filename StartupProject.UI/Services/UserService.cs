@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StartupProject.UI.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly HttpClient _httpClient;
 
@@ -17,7 +17,7 @@ namespace StartupProject.UI.Services
 
         public async Task<List<UserViewModel>> GetUsersAsync()
         {
-            var response = await _httpClient.GetAsync("https://localhost:7095/api/users");
+            var response = await _httpClient.GetAsync("api/users");
 
             if (response.IsSuccessStatusCode)
             {

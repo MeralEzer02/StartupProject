@@ -6,9 +6,9 @@ namespace StartupProject.UI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public HomeController(UserService userService)
+        public HomeController(IUserService userService)
         {
             _userService = userService;
         }
@@ -16,7 +16,6 @@ namespace StartupProject.UI.Controllers
         public async Task<IActionResult> Index()
         {
             var users = await _userService.GetUsersAsync();
-
             return View(users);
         }
     }
