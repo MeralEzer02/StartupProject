@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using StartupProject.UI.Services;
+using StartupProject.AdminUI.Services;
 using System.Threading.Tasks;
 
-namespace StartupProject.UI.Controllers
+namespace StartupProject.AdminUI.Controllers
 {
     public class HomeController : Controller
     {

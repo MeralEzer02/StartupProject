@@ -1,10 +1,10 @@
-﻿using StartupProject.UI.Models;
+﻿using StartupProject.AdminUI.Models;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace StartupProject.UI.Services
+namespace StartupProject.AdminUI.Services
 {
     public class UserService : IUserService
     {
@@ -21,7 +21,12 @@ namespace StartupProject.UI.Services
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<List<UserViewModel>>();
+                var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse<List<UserViewModel>>>();
+
+                if (apiResponse != null && apiResponse.Success)
+                {
+                    return apiResponse.Data;
+                }
             }
 
             return new List<UserViewModel>();

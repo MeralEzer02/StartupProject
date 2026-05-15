@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StartupProject.UI.Models
+namespace StartupProject.AdminUI.Models
 {
     public class UserViewModel
     {

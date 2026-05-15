@@ -1,4 +1,4 @@
-namespace StartupProject.UI.Models
+namespace StartupProject.AdminUI.Models
 {
     public class ErrorViewModel
     {

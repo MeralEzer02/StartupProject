@@ -28,10 +28,14 @@ namespace StartupProject.API.Controllers
         public IActionResult GetAll()
         {
             var users = _userRepository.GetAll();
-
             var userDtos = _mapper.Map<List<UserDto>>(users);
 
-            return Ok(userDtos);
+            return Ok(new ApiResponse<List<UserDto>>
+            {
+                Success = true,
+                Message = "Kullanıcılar başarıyla listelendi.",
+                Data = userDtos
+            });
         }
 
         [HttpPost]
@@ -40,14 +44,23 @@ namespace StartupProject.API.Controllers
             var newUser = _mapper.Map<User>(userDto);
 
             newUser.Id = Guid.NewGuid();
-            newUser.PasswordHash = userDto.Password; 
+
+            newUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
+
             newUser.CreatedAt = DateTime.Now;
             newUser.LastUpdatedAt = DateTime.Now;
 
             _userRepository.Add(newUser);
             await _unitOfWork.CommitAsync();
 
-            return Ok(new { Message = "Kullanıcı başarıyla eklendi.", UserId = newUser.Id });
+            var createdUserDto = _mapper.Map<UserDto>(newUser);
+
+            return Ok(new ApiResponse<UserDto>
+            {
+                Success = true,
+                Message = "Kullanıcı başarıyla eklendi.",
+                Data = createdUserDto
+            });
         }
     }
 }

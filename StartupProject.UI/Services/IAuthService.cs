@@ -1,11 +1,10 @@
 ﻿using StartupProject.AdminUI.Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StartupProject.AdminUI.Services
 {
-    public interface IUserService
+    public interface IAuthService
     {
-        Task<List<UserViewModel>> GetUsersAsync();
+        Task<ApiResponse<string>> LoginAsync(LoginViewModel model);
     }
 }
