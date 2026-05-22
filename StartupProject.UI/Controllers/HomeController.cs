@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StartupProject.AdminUI.Services;
 using System.Threading.Tasks;
 
 namespace StartupProject.AdminUI.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IUserService _userService;
@@ -17,6 +19,11 @@ namespace StartupProject.AdminUI.Controllers
         {
             var users = await _userService.GetUsersAsync();
             return View(users);
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
         }
     }
 }
