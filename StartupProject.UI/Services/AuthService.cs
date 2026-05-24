@@ -14,16 +14,16 @@ namespace StartupProject.AdminUI.Services
             _httpClient = httpClient;
         }
 
-        public async Task<ApiResponse<string>> LoginAsync(LoginViewModel model)
+        public async Task<ApiResponse<LoginResponseViewModel>> LoginAsync(LoginViewModel model)
         {
             var response = await _httpClient.PostAsJsonAsync("api/Auth/login", model);
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<ApiResponse<string>>();
+                return await response.Content.ReadFromJsonAsync<ApiResponse<LoginResponseViewModel>>();
             }
 
-            return new ApiResponse<string> { Success = false, Message = "Sunucu ile iletişim kurulamadı." };
+            return new ApiResponse<LoginResponseViewModel> { Success = false, Message = "Sunucu ile iletişim kurulamadı." };
         }
     }
 }

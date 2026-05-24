@@ -32,13 +32,14 @@ namespace StartupProject.AdminUI.Controllers
 
             var result = await _authService.LoginAsync(model);
 
-            if (result != null && result.Success)
+            if (result != null && result.Success && result.Data != null)
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.NameIdentifier, result.Data),
-                    new Claim(ClaimTypes.Email, model.Email)
-                    // İleride buraya Roles de eklenecek
+                    new Claim(ClaimTypes.NameIdentifier, result.Data.Id),
+                    new Claim(ClaimTypes.Email, result.Data.Email),
+                    
+                    new Claim(ClaimTypes.Role, string.IsNullOrEmpty(result.Data.Role) ? "User" : result.Data.Role)
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

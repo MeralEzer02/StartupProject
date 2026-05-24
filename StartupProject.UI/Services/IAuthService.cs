@@ -5,6 +5,6 @@ namespace StartupProject.AdminUI.Services
 {
     public interface IAuthService
     {
-        Task<ApiResponse<string>> LoginAsync(LoginViewModel model);
+        Task<ApiResponse<LoginResponseViewModel>> LoginAsync(LoginViewModel model);
     }
 }

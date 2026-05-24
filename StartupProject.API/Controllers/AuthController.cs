@@ -20,41 +20,32 @@ namespace StartupProject.API.Controllers
         [HttpPost("login")]
         public IActionResult Login(LoginDto loginDto)
         {
-            // 1. Email adresine göre kullanıcıyı bul
-            // Not: İleride Repository pattern'e GetByExpression gibi özel metotlar ekleyerek bu sorguyu optimize edeceğiz.
             var user = _userRepository.GetAll().FirstOrDefault(u => u.Email == loginDto.Email);
 
-            // 2. Kullanıcı sistemde yoksa genel bir hata dön (Güvenlik gereği "Kullanıcı yok" yerine yuvarlak bir mesaj veririz)
             if (user == null)
             {
-                return Ok(new ApiResponse<string>
-                {
-                    Success = false,
-                    Message = "Email veya şifre hatalı.",
-                    Data = null
-                });
+                return Ok(new ApiResponse<LoginResponseDto> { Success = false, Message = "Email veya şifre hatalı." });
             }
 
-            // 3. BCrypt ile şifre doğrulama (Gelen düz metin şifreyi, DB'deki Hash ile matematiksel olarak kıyaslar)
             bool isPasswordValid = BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash);
 
             if (!isPasswordValid)
             {
-                return Ok(new ApiResponse<string>
-                {
-                    Success = false,
-                    Message = "Email veya şifre hatalı.",
-                    Data = null
-                });
+                return Ok(new ApiResponse<LoginResponseDto> { Success = false, Message = "Email veya şifre hatalı." });
             }
 
-            // 4. Doğrulama başarılıysa onay dön. 
-            // (UI tarafında bu onayı aldığımızda gerçek Cookie oturumunu başlatacağız)
-            return Ok(new ApiResponse<string>
+            var responseDto = new LoginResponseDto
+            {
+                Id = user.Id.ToString(),
+                Email = user.Email,
+                Role = user.Role
+            };
+
+            return Ok(new ApiResponse<LoginResponseDto>
             {
                 Success = true,
                 Message = "Giriş başarılı.",
-                Data = user.Id.ToString() // Şimdilik sadece Id dönüyoruz, yetki işlemlerinde bu değişecek
+                Data = responseDto
             });
         }
     }
