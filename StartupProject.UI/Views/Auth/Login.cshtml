@@ -1,36 +1,67 @@
 ﻿@model StartupProject.AdminUI.Models.LoginViewModel
 
 @{
-    ViewData["Title"] = "Giriş Yap";
+    Layout = null;
 }
 
-<div class="row justify-content-center mt-5">
-    <div class="col-md-5">
-        <div class="card shadow-lg">
-            <div class="card-body p-5">
-                <h3 class="text-center mb-4">Kurumsal Panele Giriş</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Giriş Yap - StartupProject Admin</title>
 
-                @if (!ViewData.ModelState.IsValid)
-                {
-                    <div class="alert alert-danger">
-                        @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled" })
-                    </div>
-                }
+    <link href="~/css/tabler.min.css" rel="stylesheet" />
+    <link href="~/css/tabler-vendors.min.css" rel="stylesheet" />
+</head>
+<body class="d-flex flex-column border-top-wide border-primary bg-light">
+    <div class="page page-center">
+        <div class="container container-tight py-4">
 
-                <form asp-action="Login" asp-controller="Auth" method="post">
-                    <div class="mb-3">
-                        <label asp-for="Email" class="form-label fw-bold">Email Adresi</label>
-                        <input asp-for="Email" class="form-control form-control-lg" placeholder="ornek@mail.com" />
-                    </div>
-                    <div class="mb-4">
-                        <label asp-for="Password" class="form-label fw-bold">Şifre</label>
-                        <input asp-for="Password" type="password" class="form-control form-control-lg" placeholder="******" />
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg">Giriş Yap</button>
-                    </div>
-                </form>
+            <div class="text-center mb-4">
+                <a href="#" class="navbar-brand navbar-brand-autodark">
+                    <span class="fs-1 fw-bold text-primary">StartupProject</span>
+                </a>
             </div>
+
+            <div class="card card-md shadow-sm">
+                <div class="card-body">
+                    <h2 class="h2 text-center mb-4">Panele Giriş</h2>
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <div class="d-flex">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 8v4" /><path d="M12 16h.01" /></svg>
+                                </div>
+                                <div>
+                                    @Html.ValidationSummary(false, "", new { @class = "text-danger list-unstyled mb-0" })
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <form asp-action="Login" asp-controller="Auth" method="post" autocomplete="off">
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label fw-bold">Email Adresi</label>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="ornek@mail.com" autocomplete="off" />
+                        </div>
+                        <div class="mb-4">
+                            <label asp-for="Password" class="form-label fw-bold">Şifre</label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="******" autocomplete="off" />
+                        </div>
+                        <div class="form-footer">
+                            <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
         </div>
     </div>
-</div>
+
+    <script src="~/js/tabler.min.js" defer></script>
+</body>
+</html>

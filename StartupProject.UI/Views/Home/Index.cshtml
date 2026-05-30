@@ -1,28 +1,110 @@
 ﻿@using StartupProject.AdminUI.Models
-@model List<UserViewModel>
+@model DashboardViewModel
 
 @{
-    ViewData["Title"] = "Ana Sayfa";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center mt-5">
-    <h2>Sisteme Kayıtlı Kullanıcılar</h2>
-    <hr />
+<div class="page-header d-print-none mb-4 mt-2">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle">Genel Bakış</div>
+            <h2 class="page-title">Kurumsal Dashboard</h2>
+        </div>
+    </div>
+</div>
 
-    <ul class="list-group mt-3">
-        @if (Model != null && Model.Any())
+<div class="row row-deck row-cards mb-4">
+    <div class="col-sm-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Toplam Kullanıcı</div>
+                </div>
+                <div class="h1 mb-3 mt-2">@Model.UserCount</div>
+                <div class="d-flex mb-2">
+                    <div class="text-muted">Sistemdeki kayıtlı hesaplar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Aktif Roller</div>
+                </div>
+                <div class="h1 mb-3 mt-2">@Model.RoleCount</div>
+                <div class="d-flex mb-2">
+                    <div class="text-muted">Yetkilendirme grupları</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Sistem Durumu</div>
+                </div>
+                <div class="h1 mb-3 mt-2 @(Model.SystemStatus.Contains("Aktif") ? "text-success" : "text-danger")">
+                    @if (Model.SystemStatus.Contains("Aktif"))
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l5 5l10 -10" /></svg>
+                    }
+                    else
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 8v4" /><path d="M12 16h.01" /></svg>
+                    }
+                    @Model.SystemStatus
+                </div>
+                <div class="d-flex mb-2">
+                    <div class="text-muted">API Sunucusu Bağlantısı</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h3 class="card-title">Son Kayıtlı Kullanıcılar</h3>
+    </div>
+    <div class="list-group list-group-flush">
+        @if (Model.Users != null && Model.Users.Any())
         {
-            foreach (var user in Model)
+            foreach (var user in Model.Users)
             {
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    @user.Name @user.Surname
-                    <span class="badge bg-primary rounded-pill">@user.Role</span>
-                </li>
+                <div class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="avatar" style="background-image: url(https://ui-avatars.com/api/?name=@user.Name)"></span>
+                        </div>
+                        <div class="col text-truncate">
+                            <span class="text-reset d-block fw-bold">@user.Name @user.Surname</span>
+                            <div class="text-muted text-truncate mt-n1">@user.Email</div>
+                        </div>
+                        <div class="col-auto">
+                            @if (user.Role == "SuperAdmin")
+                            {
+                                <span class="badge bg-danger text-white rounded-pill px-3 py-1">@user.Role</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-primary text-white rounded-pill px-3 py-1">@user.Role</span>
+                            }
+                        </div>
+                    </div>
+                </div>
             }
         }
         else
         {
-            <div class="alert alert-warning">Sistemde henüz kullanıcı bulunmuyor veya API bağlantısı kurulamadı.</div>
+            <div class="card-body">
+                <div class="alert alert-warning mb-0">Sistemde henüz kullanıcı bulunmuyor veya API bağlantısı kurulamadı.</div>
+            </div>
         }
-    </ul>
+    </div>
 </div>

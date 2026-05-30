@@ -2,68 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - StartupProject.AdminUI</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/StartupProject.AdminUI.styles.css" asp-append-version="true" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">StartupProject.AdminUI</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Anasayfa</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Gizlilik</a>
-                            </li>
-                        }
-                    </ul>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>@ViewData["Title"] - StartupProject Admin</title>
 
-                    <ul class="navbar-nav">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <span class="nav-link text-primary fw-bold">Merhaba, @User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value</span>
-                            </li>
-                            <li class="nav-item">
-                                <a class="btn btn-outline-danger btn-sm mt-1 ms-2" asp-controller="Auth" asp-action="Logout">Çıkış Yap</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="Auth" asp-action="Login">Giriş Yap</a>
-                            </li>
-                        }
-                    </ul>
+    <link href="~/css/tabler.min.css" rel="stylesheet" />
+    <link href="~/css/tabler-vendors.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+
+    <style>
+        @@import url('https://rsms.me/inter/inter.css');
+
+        :root {
+            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+        }
+
+        body {
+            font-feature-settings: "cv03", "cv04", "cv11";
+        }
+    </style>
+    <script>
+        // TEMA MOTORU: Hem açılışta temayı okur, hem de değiştirme fonksiyonu sağlar
+        var themeStorageKey = "tablerTheme";
+        var defaultTheme = "light";
+        var selectedTheme = localStorage.getItem(themeStorageKey) || defaultTheme;
+        document.documentElement.setAttribute("data-bs-theme", selectedTheme);
+
+        function changeTheme(theme) {
+            localStorage.setItem(themeStorageKey, theme);
+            document.documentElement.setAttribute("data-bs-theme", theme);
+        }
+    </script>
+</head>
+<body class="layout-fluid">
+    <div class="page">
+        @await Html.PartialAsync("_Sidebar")
+
+        @await Html.PartialAsync("_Navbar")
+
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="container-xl">
+                    @RenderBody()
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+            @await Html.PartialAsync("_Footer")
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - StartupProject.AdminUI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/tabler.min.js" defer></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

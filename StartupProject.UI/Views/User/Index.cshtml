@@ -1,0 +1,118 @@
+﻿@using StartupProject.AdminUI.Models
+@model List<UserViewModel>
+
+@{
+    ViewData["Title"] = "Kullanıcılar";
+}
+
+<div class="page-header d-print-none mb-4 mt-2">
+    <div class="row align-items-center">
+        <div class="col">
+            <h2 class="page-title">Sisteme Kayıtlı Kullanıcılar</h2>
+            <div class="text-muted mt-1">Sistemdeki tüm kullanıcıları yönetin.</div>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+            <a asp-controller="User" asp-action="Create" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                Yeni Kullanıcı Ekle
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-vcenter table-mobile-md card-table text-nowrap hover">
+            <thead>
+                <tr>
+                    <th>Profil</th>
+                    <th>Ad Soyad</th>
+                    <th>Email Adresi</th>
+                    <th>Rol</th>
+                    <th class="w-1 text-end">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="w-1">
+                                <span class="avatar avatar-sm rounded" style="background-image: url(https://ui-avatars.com/api/?name=@user.Name)"></span>
+                            </td>
+                            <td>
+                                <div class="font-weight-medium">@user.Name @user.Surname</div>
+                            </td>
+                            <td class="text-muted">
+                                @user.Email
+                            </td>
+                            <td>
+                                @if (user.Role == "SuperAdmin")
+                                {
+                                    <span class="badge bg-danger text-white rounded-pill px-3 py-1">@user.Role</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary text-white rounded-pill px-3 py-1">@user.Role</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <a asp-controller="User" asp-action="Edit" asp-route-id="@user.Id" class="btn btn-outline-info btn-sm me-2">Düzenle</a>
+
+                                @if (user.Role == "SuperAdmin")
+                                {
+                                    <button class="btn btn-outline-secondary btn-sm disabled" title="Sistem Korunması">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shield-lock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" /><path d="M12 11m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12l0 2.5" /></svg>
+                                        Silinemez
+                                    </button>
+                                }
+                                else
+                                {
+                                    <a href="#" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-danger-@user.Id">Sil</a>
+                                }
+                            </td>
+                        </tr>
+
+                        @if (user.Role != "SuperAdmin")
+                        {
+                            <div class="modal modal-blur fade" id="modal-danger-@user.Id" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <div class="modal-status bg-danger"></div>
+                                        <div class="modal-body text-center py-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 9v2m0 4v.01" /><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" /></svg>
+                                            <h3>Emin misiniz?</h3>
+                                            <div class="text-muted">@user.Name adlı kullanıcıyı sistemden silmek üzeresiniz. Bu işlem geri alınamaz.</div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="w-100">
+                                                <div class="row">
+                                                    <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">İptal</a></div>
+                                                    <div class="col">
+                                                        <form asp-controller="User" asp-action="Delete" asp-route-id="@user.Id" method="post">
+                                                            <button type="submit" class="btn btn-danger w-100">Evet, Sil</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">
+                            Sistemde henüz kayıtlı bir kullanıcı bulunmuyor veya API bağlantısı sağlanamadı.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
