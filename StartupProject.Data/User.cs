@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StartupProject.Data
 {
@@ -13,8 +9,12 @@ namespace StartupProject.Data
         public string Surname { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
-        public string Role { get; set; }
+
+        public string Role { get; set; } = UserRoles.User;
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime LastUpdatedAt { get; set; } = DateTime.Now;
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Ayarlar";
+}
+
+<div class="page-header d-print-none mb-4 mt-2">
+    <div class="row align-items-center">
+        <div class="col">
+            <h2 class="page-title">Sistem Ayarları</h2>
+            <div class="text-muted mt-1">Uygulama ve veritabanı altyapı parametrelerini inceleyin.</div>
+        </div>
+    </div>
+</div>
+
+<div class="row row-cards">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h3 class="card-title">Sistem Yapılandırma Detayları</h3>
+            </div>
+            <div class="card-body">
+                <div class="datagrid">
+                    <div class="datagrid-item">
+                        <div class="datagrid-title">Uygulama Adı (Application Name)</div>
+                        <div class="datagrid-content fw-bold text-dark">@ViewData["ApplicationName"]</div>
+                    </div>
+                    <div class="datagrid-item">
+                        <div class="datagrid-title">Çalışma Ortamı (Environment)</div>
+                        <div class="datagrid-content">
+                            <span class="status status-orange text-white px-2 py-1 rounded">@ViewData["Environment"]</span>
+                        </div>
+                    </div>
+                    <div class="datagrid-item">
+                        <div class="datagrid-title">Sistem Versiyonu</div>
+                        <div class="datagrid-content">
+                            <span class="badge bg-blue text-white rounded-pill px-3 py-1">@ViewData["Version"]</span>
+                        </div>
+                    </div>
+                    <div class="datagrid-item">
+                        <div class="datagrid-title">Aktif Veritabanı (Database)</div>
+                        <div class="datagrid-content text-muted">@ViewData["Database"]</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <button class="btn btn-primary disabled" title="Çekirdek ayarlar sadece appsettings.json üzerinden değiştirilebilir.">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-lock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" /><path d="M12 11v-4a3 3 0 0 1 6 0v4" /></svg>
+                    Ayarları Güncelle (Kilitli)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

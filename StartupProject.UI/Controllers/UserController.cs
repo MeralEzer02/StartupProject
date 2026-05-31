@@ -25,54 +25,61 @@ namespace StartupProject.AdminUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(string returnUrl = null)
         {
+            ViewBag.ReturnUrl = returnUrl ?? Request.Headers["Referer"].ToString();
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserViewModel model)
+        public async Task<IActionResult> Create(UserViewModel model, string returnUrl = null)
         {
+            ModelState.Remove("Id");
+            ModelState.Remove("Password");
+
             if (ModelState.IsValid)
             {
                 var isSuccess = await _userService.CreateUserAsync(model);
                 if (isSuccess)
                 {
-                    return RedirectToAction(nameof(Index));
+                    return Redirect(returnUrl ?? Url.Action("Index"));
                 }
             }
+            ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id, string returnUrl = null)
         {
             var users = await _userService.GetUsersAsync();
             var user = users.FirstOrDefault(u => u.Id == id);
-
             if (user == null) return RedirectToAction(nameof(Index));
 
+            ViewBag.ReturnUrl = returnUrl ?? Request.Headers["Referer"].ToString();
             return View(user);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(UserViewModel model)
+        public async Task<IActionResult> Edit(UserViewModel model, string returnUrl = null)
         {
+            ModelState.Remove("Password");
             if (ModelState.IsValid)
             {
                 var isSuccess = await _userService.UpdateUserAsync(model);
                 if (isSuccess)
                 {
-                    return RedirectToAction(nameof(Index));
+                    return Redirect(returnUrl ?? Url.Action("Index"));
                 }
             }
+            ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var isSuccess = await _userService.DeleteUserAsync(id);
+            await _userService.DeleteUserAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

@@ -18,6 +18,8 @@
         <div class="card shadow-sm">
             <form asp-action="Edit" method="post">
                 <input type="hidden" asp-for="Id" />
+                <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-md-6">
@@ -45,7 +47,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-end">
-                    <a asp-action="Index" class="btn btn-link">İptal</a>
+                    <a href="javascript:history.back()" class="btn btn-link">İptal</a>
                     <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
                 </div>
             </form>

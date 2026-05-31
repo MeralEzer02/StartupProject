@@ -1,0 +1,87 @@
+﻿@model List<string>
+
+@{
+    ViewData["Title"] = "Roller";
+}
+
+<div class="page-header d-print-none mb-4 mt-2">
+    <div class="row align-items-center">
+        <div class="col">
+            <h2 class="page-title">Yetkilendirme Rolleri</h2>
+            <div class="text-muted mt-1">Sistemdeki erişim seviyelerini yönetin.</div>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+            <a href="#" class="btn btn-primary disabled">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                Yeni Rol Ekle
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-vcenter table-mobile-md card-table text-nowrap hover">
+            <thead>
+                <tr>
+                    <th>Rol Adı</th>
+                    <th>Açıklama</th>
+                    <th class="w-1 text-center">Durum</th>
+                    <th class="w-1 text-end">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (role == "SuperAdmin")
+                            {
+                                <span class="badge bg-danger text-white rounded-pill px-3 py-1">@role</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-primary text-white rounded-pill px-3 py-1">@role</span>
+                            }
+                        </td>
+                        <td class="text-muted text-wrap">
+                            @if (role == "SuperAdmin")
+                            {
+                                <text>Sistemin tam yetkili yöneticisi. Silinemez ve yetkileri kısıtlanamaz.</text>
+                            }
+                            else if (role == "Admin")
+                            {
+                                <text>Genel yönetim yetkilerine sahip yönetici hesabı.</text>
+                            }
+                            else
+                            {
+                                <text>Sistemin standart kullanıcısı. Sadece izin verilen modülleri görebilir.</text>
+                            }
+                        </td>
+                        <td class="text-center">
+                            <span class="status status-green text-white px-2 py-1 rounded">Aktif</span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-flex flex-column flex-md-row justify-content-md-end gap-2">
+                                <a href="#" class="btn btn-outline-info btn-sm disabled">Düzenle</a>
+
+                                @if (role == "SuperAdmin")
+                                {
+                                    <button class="btn btn-outline-secondary btn-sm disabled" title="Sistem Korunması">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shield-lock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" /><path d="M12 11m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12l0 2.5" /></svg>
+                                        Sabit
+                                    </button>
+                                }
+                                else
+                                {
+                                    <a href="#" class="btn btn-outline-danger btn-sm disabled">Sil</a>
+                                }
+                            </div>
+                            <div class="d-block d-md-none border-bottom border-2 mt-3 mb-1"></div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -58,19 +58,22 @@
                                 }
                             </td>
                             <td class="text-end">
-                                <a asp-controller="User" asp-action="Edit" asp-route-id="@user.Id" class="btn btn-outline-info btn-sm me-2">Düzenle</a>
+                                <div class="d-flex flex-column flex-md-row justify-content-md-end gap-2">
+                                    <a asp-controller="User" asp-action="Edit" asp-route-id="@user.Id" class="btn btn-outline-info btn-sm">Düzenle</a>
 
-                                @if (user.Role == "SuperAdmin")
-                                {
-                                    <button class="btn btn-outline-secondary btn-sm disabled" title="Sistem Korunması">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shield-lock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" /><path d="M12 11m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12l0 2.5" /></svg>
-                                        Silinemez
-                                    </button>
-                                }
-                                else
-                                {
-                                    <a href="#" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-danger-@user.Id">Sil</a>
-                                }
+                                    @if (user.Role == "SuperAdmin")
+                                    {
+                                        <button class="btn btn-outline-secondary btn-sm disabled" title="Sistem Korunması">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shield-lock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" /><path d="M12 11m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12l0 2.5" /></svg>
+                                            Silinemez
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modal-danger-@user.Id">Sil</a>
+                                    }
+                                </div>
+                                <div class="d-block d-md-none border-bottom border-2 mt-3 mb-1"></div>
                             </td>
                         </tr>
 
